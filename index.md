@@ -1,6 +1,5 @@
 ---
-title: CSS class naming strategies for scaleable dashboard design
+title: Nue Tutorial
 ---
-
-# Hello
+Hello - Small tutorial for Todo
 

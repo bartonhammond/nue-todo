@@ -15,4 +15,7 @@ navigation:
 
   header:
     - Barton Hammond: /
+    - ToDo: /todo/
+    - Add: /add/
+    
 

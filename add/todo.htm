@@ -1,0 +1,28 @@
+<div @name="array-demo" class="array-demo">
+
+  <button @click="add" :disabled="items[5]">Add user</button>
+
+  <ul>
+    <li :for="el of items">
+      { el.name }
+    </li>
+  </ul>
+
+  <script>
+
+    // render first three users
+    constructor({ users }) {
+      this.items = users.slice(0, 2)
+      this.all = users
+    }
+
+    // insert a new item
+    add() {
+      const { items, all } = this
+      const item = all[items.length]
+      if (item) items.push(item)
+    }
+  </script>
+
+</div>
+
