@@ -4,25 +4,22 @@
 
 <form @name="contact-me" @submit.prevent="submit" autocomplete="on">
   <label>
-    <span>Your name</span>
-    <input type="text" name="name" placeholder="Example: John Doe" required>
-  </label>
-
-  <label>
-    <span>Your email</span>
-    <input type="email" name="email" placeholder="your@email.com" required>
+    <span>Done</span>
+    <input type="checkbox" id="done" name="done">
   </label>
 
   <label>
     <span>Requirements</span>
-    <textarea name="feedback" placeholder="Type here..."/>
+    <input name="description" placeholder="Type here..."/>
   </label>
 
   <button>Lets talk!</button>
 
   <script>
     submit() {
-      loadPage('thanks.html')
+     let done = document.forms[0].done.checked
+     let description = document.forms[0].description.value
+     alert('done ' + done + ' description: ' + description)
     }
   </script>
 </form>
