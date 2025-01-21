@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=https://json.schemastore.org/nuejs-site.json
+globals: ['@global']
+libs: ['@library']
+
+view_transitions: true
+native_css_nesting: true
+inline_css: true
+sections: true
+
+title_template: 'Barton Hammond / %s'
+
+navigation:
+  footer:
+    - © Barton Hammond: /
+
+  header:
+    - Barton Hammond: /
+
