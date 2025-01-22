@@ -26,6 +26,10 @@ input, textarea {
   width: 100%;
 }
 
+[type=checkbox] {
+    width: 1rem;
+}
+
 textarea {
   resize: vertical;
   form-sizing: normal;

@@ -1,5 +1,5 @@
-<script>
-  import { loadPage } from '/@nue/view-transitions.js'
+ <script>
+  import { $, loadPage } from '/@nue/view-transitions.js'
 </script>
 
 <form @name="contact-me" @submit.prevent="submit" autocomplete="on">
@@ -10,15 +10,16 @@
 
   <label>
     <span>Requirements</span>
-    <input name="description" placeholder="Type here..."/>
+    <input name="description" id="description" placeholder="Type here..."/>
   </label>
 
   <button>Lets talk!</button>
 
   <script>
     submit() {
-     let done = document.forms[0].done.checked
-     let description = document.forms[0].description.value
+     let done = $("#done").checked
+     debugger
+     let description = $('#description').value
      alert('done ' + done + ' description: ' + description)
     }
   </script>

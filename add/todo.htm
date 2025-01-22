@@ -1,26 +1,45 @@
-<div @name="array-demo" class="array-demo">
+<script>
+  import { $ } from '/@nue/view-transitions.js'
+</script>
 
-  <button @click="add" :disabled="items[5]">Add user</button>
+<div @name="array-demo">
+  <h3>ToDo</h3>
+  
+  <input id="newTodo" @keyup.enter="newTodo()" placeholder="What needs to be done..." >
 
-  <ul>
-    <li :for="el of items">
-      { el.name }
-    </li>
-  </ul>
+  <table>
+    <tbody>
+      <tr :for="(el, index) in items">
+	<td><input  @click="done(index)" type="checkbox" name="done" value="{ el.done}"></td>
+	<td><input id="desc-{index}" @keyup.enter="desc(index)" name="desc" value="{ el.desc}"></td>
+      </tr>
+      <tfoot>
+	<td>{items.length} items</td>
+	</tfoot>
+    </tbody>
+    
+  </table>
 
   <script>
-
-    // render first three users
-    constructor({ users }) {
-      this.items = users.slice(0, 2)
-      this.all = users
+    constructor() {
+	this.items = []
     }
 
-    // insert a new item
-    add() {
-      const { items, all } = this
-      const item = all[items.length]
-      if (item) items.push(item)
+    newTodo() {
+	const desc = $("#newTodo").value
+	if (!desc) {
+	    alert("Please provide description")
+	    return
+	} 
+	this.items.push({done: false, desc: desc})
+	$("#newTodo").value = ""
+	this.total++
+    }
+    desc(index) {
+	this.items[index].desc = $("desc-" + index).desc
+    }
+    done(index) {
+	this.items[index].done = !this.items[index]
     }
   </script>
 
