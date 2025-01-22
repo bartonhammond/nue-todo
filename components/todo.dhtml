@@ -1,109 +1,132 @@
 <script>
   import { $ } from '/@nue/view-transitions.js'
   const FILTER = {
-    ALL: "all",
-    ACTIVE: "active",
-    COMPLETED: "completed"
+    ALL: 'all',
+    ACTIVE: 'active',
+    COMPLETED: 'completed',
   }
 </script>
 
 <section @name="todo">
-  <input id="newTodo" @keyup.enter="newTodo()" placeholder="What needs to be done..." >
-  <table >
-    <tbody>
-	<mycheckbox  :for="el in items" id="{el.id}" desc="{el.desc}"/>
-    </tbody>
-  </table>
-  {total} items
-  <button @click="showAll()">All</button>
-  <button @click="showActive()">Active</button>
-  <button @click="showCompleted()">Completed</button>
+  <section>
+    <input id="allSelect" type="checkbox" @click="allSelect" />
+    <input id="newTodo" @keyup.enter="newTodo()" placeholder="What needs to be done..." />
+  </section>
+  <section :for="el in items">
+    <input :if="el.done" id="chk-{el.id}" type="checkbox" @click="doneUpdate" checked />
+    <input :if="!el.done" id="chk-{el.id}" type="checkbox" @click="doneUpdate" />
+    <input id="desc-{el.id}" value="{el.desc}" @keyup.enter="descUpdate" />
+    <button id="delbtn-{el.id}" @click="deleteItem">X</button>
+  </section>
+
+  <section>
+    {total} items
+    <button :disabled="total == 0" @click="showAll">All</button>
+    <button :disabled="total == 0" @click="showActive">Active</button>
+    <button :disabled="total == 0" @click="showCompleted">Completed</button>
+    <button :disabled="numberCompleted == 0" @click="clearCompleted">Clear Completed</button>
+  </section>
 
   <script>
-    /**
-      <td><input id="chk-{id}" type="checkbox"  @click="doneUpdate"</td>
-  <td><input id="desc-{id}" value="{desc}" @keyup.enter="descUpdate"></td>
-
-    <mycheckbox  id="{el.id}" done="{el.done}" desc="{el.desc}" />
-    */
     constructor() {
-	this.items = []
-	this.all = []
-	this.filter = FILTER.ALL
-	this.total = 0
+      this.items = []
+      this.all = []
+      this.filter = FILTER.ALL
+      this.total = 0
+      this.numberCompleted = 0
     }
-    
+
     filterItems(filter) {
-	let { items, all, total} = this
-	total = all.length
-	
-	switch(filter) {
-	case FILTER.ALL:
-	    items = JSON.parse(JSON.stringify(all))
-	    break
-	case FILTER.ACTIVE:
-	    items = all.filter((item) => !item.done)
-	    break
-	case FILTER.COMPLETED:
-	    items = all.filter((item) => item.done)
-	    break
-	}
-	this.items = items
+      let { items, all, total} = this
+
+      switch(filter) {
+        case FILTER.ALL:
+        items = JSON.parse(JSON.stringify(all))
+        break
+        case FILTER.ACTIVE:
+        items = all.filter((item) => !item.done)
+        break
+        case FILTER.COMPLETED:
+        items = all.filter((item) => item.done)
+        break
+      }
+      //Update so reactivity occurs
+      this.total = all.length
+      this.items = items
+      this.numberCompleted =   all.filter(item => item.done).length
     }
-    
+
     showAll() {
-	let { filter } = this
-	filter = FILTER.ALL
-	this.filterItems(filter)
+      let { filter } = this
+      filter = FILTER.ALL
+      this.filterItems(filter)
     }
-    
+
     showActive() {
-	let { filter } = this
-	filter = FILTER.ACTIVE
-	this.filterItems(filter)
+      let { filter } = this
+      filter = FILTER.ACTIVE
+      this.filterItems(filter)
     }
-    
+
     showCompleted() {
-	let { filter } = this
-	filter = FILTER.COMPLETED
-	this.filterItems(filter)
+      let { filter } = this
+      filter = FILTER.COMPLETED
+      this.filterItems(filter)
     }
-    
+
     newTodo() {
-	const desc = $("#newTodo").value
-	if (!desc) {
-	    alert("Please provide description")
-	    return
-	}
-	let { all, filter } = this
-	const obj = {id: Date.now(), done: false, desc: desc}
-	all.push(obj)
-	
-	$("#newTodo").value = ""
-	this.filterItems(filter)
+      const desc = $("#newTodo").value
+      if (!desc) {
+        alert("Please provide description")
+        return
+      }
+
+      let { all, filter } = this
+      const obj = {id: Date.now(), done: false, desc: desc}
+      all.push(obj)
+
+      $("#newTodo").value = ""
+      this.filterItems(filter)
     }
 
     getItem($event) {
-	let {  all } = this
-	const id = parseInt($event.currentTarget.id.split('-')[1])
-	return all.find((e) => e.id == id)
+      let { all } = this
+      const id = parseInt($event.currentTarget.id.split('-')[1])
+      return all.find((e) => e.id == id)
     }
-    
+
     descUpdate($event) {
-	//desc-0 = $event.currentTarget.id
-	let item = this.getItem($event)
-	item.desc = $("#desc-" + item.id).value
-	let {  filter } = this
-	this.filterItems(filter)
+      //desc-0 = $event.currentTarget.id
+      let item = this.getItem($event)
+      item.desc = $("#desc-" + item.id).value
+      let { filter } = this
+      this.filterItems(filter)
     }
 
     doneUpdate($event) {
-    //'chk-0' = $event.currentTarget.id
-    let item = this.getItem($event)
-	item.done = !item.done
-	let {  filter } = this
-	this.filterItems(filter)
+      let item = this.getItem($event)
+      item.done = !item.done
+      let { filter } = this
+      this.filterItems(filter)
+    }
+
+    deleteItem($event) {
+      let item = this.getItem($event)
+      let { all, filter } = this
+      this.all = all.filter(ele => item.id != ele.id)
+      this.filterItems(filter)
+    }
+
+    allSelect($event) {
+      let { all, filter } = this
+      all.map(a=> a.done = $event.currentTarget.checked ? true:false );
+      this.filterItems(filter)
+    }
+
+    clearCompleted($event) {
+      let { all, filter } = this
+      this.all = all.filter(ele => !ele.done)
+      this.filterItems(filter)
     }
   </script>
 </section>
-
