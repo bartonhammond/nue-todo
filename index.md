@@ -1,7 +1,5 @@
 ---
-title: Nue Tutorial
+title: Nue Todo
 ---
-Small tutorial for Todo
-
-
-
+# Nue Todo Example
+[array-demo]
