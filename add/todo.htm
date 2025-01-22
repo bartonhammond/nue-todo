@@ -1,47 +1,111 @@
 <script>
   import { $ } from '/@nue/view-transitions.js'
+  const FILTER = {
+    ALL: "all",
+    ACTIVE: "active",
+    COMPLETED: "completed"
+  }
 </script>
+
 
 <div @name="array-demo">
   <h3>ToDo</h3>
   
   <input id="newTodo" @keyup.enter="newTodo()" placeholder="What needs to be done..." >
 
-  <table>
+  <table >
     <tbody>
-      <tr :for="(el, index) in items">
-	<td><input  @click="done(index)" type="checkbox" name="done" value="{ el.done}"></td>
-	<td><input id="desc-{index}" @keyup.enter="desc(index)" name="desc" value="{ el.desc}"></td>
+      <tr :for="el in items">
+	<mycheckbox :bind="el"/>
+	<td><input id="desc-{el.id}" value="{el.desc}" @keyup.enter="desc"></td>
       </tr>
-      <tfoot>
-	<td>{items.length} items</td>
-	</tfoot>
     </tbody>
-    
   </table>
+  
+  {total} items
+  <button @click="showAll()">All</button>
+  <button @click="showActive()">Active</button>
+  <button @click="showCompleted()">Completed</button>
 
   <script>
     constructor() {
 	this.items = []
+	this.all = []
+	this.filter = FILTER.ALL
+	this.total = 0
     }
-
+    
+    filterItems(filter) {
+	let { items, all, total} = this
+	total = all.length
+	
+	switch(filter) {
+	case FILTER.ALL:
+	    items = JSON.parse(JSON.stringify(all))
+	    break
+	case FILTER.ACTIVE:
+	    items = all.filter((item) => !item.done)
+	    break
+	case FILTER.COMPLETED:
+	    items = all.filter((item) => item.done)
+	    break
+	}
+	this.items = items
+    }
+    
+    showAll() {
+	let { filter } = this
+	filter = FILTER.ALL
+	this.filterItems(filter)
+    }
+    
+    showActive() {
+	let { filter } = this
+	filter = FILTER.ACTIVE
+	this.filterItems(filter)
+    }
+    
+    showCompleted() {
+	let { filter } = this
+	filter = FILTER.COMPLETED
+	this.filterItems(filter)
+    }
+    
     newTodo() {
 	const desc = $("#newTodo").value
 	if (!desc) {
 	    alert("Please provide description")
 	    return
-	} 
-	this.items.push({done: false, desc: desc})
+	}
+	let { all, filter } = this
+	const obj = {id: Date.now(), done: false, desc: desc}
+	all.push(obj)
+	
 	$("#newTodo").value = ""
-	this.total++
+	this.filterItems(filter)
     }
-    desc(index) {
-	this.items[index].desc = $("desc-" + index).desc
+
+    getItem($event) {
+	let {  all } = this
+	const id = parseInt($event.currentTarget.id.split('-')[1])
+	return all.find((e) => e.id == id)
     }
-    done(index) {
-	this.items[index].done = !this.items[index]
+    
+    desc($event) {
+	//desc-0 = $event.currentTarget.id
+	let item = this.getItem($event)
+	item.desc = $("#desc-" + id).value
+	let {  filter } = this
+	this.filterItems(filter)
+    }
+
+    done($event) {
+	//'chk-0' = $event.currentTarget.id
+	let item = this.getItem($event)
+	item.done = !item.done
+	let {  filter } = this
+	this.filterItems(filter)
     }
   </script>
-
 </div>
 
