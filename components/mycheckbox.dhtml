@@ -1,0 +1,6 @@
+<div @name="mycheckbox">
+  <tr>
+    <td>{desc}</td>
+    <td>{id}</td>
+  </tr>
+</div>
