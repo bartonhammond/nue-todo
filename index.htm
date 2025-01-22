@@ -10,11 +10,18 @@
 
 <div @name="array-demo">
   <input id="newTodo" @keyup.enter="newTodo()" placeholder="What needs to be done..." >
-
   <table >
     <tbody>
       <tr :for="el in items">
-	<mycheckbox :bind="el"/>
+	<mycheckbox :bind="el" >
+	  <script>
+		//Maybe get the done attribute and set "checked"
+		//But this never gets called
+	    constructor() {
+			console.log("hello")
+	    }
+	  </script>
+	  </mycheckbox>
 	<td><input id="desc-{el.id}" value="{el.desc}" @keyup.enter="desc"></td>
       </tr>
     </tbody>
