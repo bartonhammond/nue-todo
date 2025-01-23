@@ -14,4 +14,9 @@ navigation:
     - Nue Tudo: /
 
   footer:
-    - © NueJs: /
+    - © Barton Hammond: /
+
+    - image: /img/github.svg
+      url: //github.com/bartonhammond/nue-todo
+      alt: Github Projects
+      size: 22 x 22
