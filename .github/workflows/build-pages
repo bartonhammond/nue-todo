@@ -37,7 +37,6 @@ jobs:
 
       - name: Build
         run: nue build --production --base /nue-todo
-        # e.g. nue build -pr src
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
