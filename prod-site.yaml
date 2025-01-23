@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=https://json.schemastore.org/nuejs-site.json
+globals: ['@global', components, style]
+libs: ['@library']
+
+view_transitions: true
+native_css_nesting: true
+inline_css: true
+sections: true
+
+title_template: 'Todo / %s'
+
+navigation:
+  header:
+    - Nue Tudo: /
+
+  footer:
+    - © Barton Hammond: /
+
+    - image: /nue-todo/img/github.svg
+      url: //github.com/bartonhammond/nue-todo
+      alt: Github Projects
+      size: 22 x 22
