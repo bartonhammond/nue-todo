@@ -7,24 +7,28 @@
   }
 </script>
 
-<section @name="todo">
-  <section>
+<section @name="todo" class="todo">
+  <div class="row">
     <input id="allSelect" type="checkbox" @click="allSelect" />
     <input id="newTodo" @keyup.enter="newTodo()" placeholder="What needs to be done..." />
-  </section>
+  </div>
   <section :for="el in items">
-    <input :if="el.done" id="chk-{el.id}" type="checkbox" @click="doneUpdate" checked />
-    <input :if="!el.done" id="chk-{el.id}" type="checkbox" @click="doneUpdate" />
-    <input id="desc-{el.id}" value="{el.desc}" @keyup.enter="descUpdate" />
-    <button id="delbtn-{el.id}" @click="deleteItem">X</button>
+    <div class="row">
+      <input :if="el.done" id="chk-{el.id}" type="checkbox" @click="doneUpdate" checked />
+      <input :if="!el.done" id="chk-{el.id}" type="checkbox" @click="doneUpdate" />
+      <input id="desc-{el.id}" value="{el.desc}" @keyup.enter="descUpdate" />
+      <button style="width: 1rem" id="delbtn-{el.id}" @click="deleteItem">X</button>
+    </div>
   </section>
 
   <section>
-    {total} items
-    <button :disabled="total == 0" @click="showAll">All</button>
-    <button :disabled="total == 0" @click="showActive">Active</button>
-    <button :disabled="total == 0" @click="showCompleted">Completed</button>
-    <button :disabled="numberCompleted == 0" @click="clearCompleted">Clear Completed</button>
+    <div class="row">
+      {total} items
+      <button :disabled="total == 0" @click="showAll">All</button>
+      <button :disabled="total == 0" @click="showActive">Active</button>
+      <button :disabled="total == 0" @click="showCompleted">Completed</button>
+      <button :disabled="numberCompleted == 0" @click="clearCompleted">Clear</button>
+    </div>
   </section>
 
   <script>
