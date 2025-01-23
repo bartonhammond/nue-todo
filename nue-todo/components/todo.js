@@ -1,5 +1,5 @@
 
-  import { $ } from '/@nue/view-transitions.js'
+  import { $ } from '../@nue/view-transitions.js'
   const FILTER = {
     ALL: 'all',
     ACTIVE: 'active',
